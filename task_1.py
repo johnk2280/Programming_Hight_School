@@ -36,7 +36,7 @@ class LinkedList:
         node = self.head
         while node is not None:
             if node.value == val:
-                result.append(node.value)
+                result.append(node)
             node = node.next
         return result
 
