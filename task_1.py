@@ -53,17 +53,19 @@ class LinkedList:
                 node = self.head
                 if all is False:
                     break
-            else:
+            elif node.value == val and node != self.tail:
                 prev_node.next = node.next
                 node = prev_node
                 if all is False:
                     break
+            self.tail = prev_node
+
+        if self.head is None:
+            self.tail = None
 
     def clean(self):
-        node = self.head
-        while node is not None:
-            node = node.next
-            self.head = node
+        self.head = None
+        self.tail = None
 
     def len(self):
         node = self.head
@@ -74,13 +76,14 @@ class LinkedList:
         return count
 
     def insert(self, afterNode, newNode):
-
         if afterNode is None:
             new_head = Node(newNode)
+            if self.head is None:
+                self.head = new_head
+                self.tail = new_head
+                return
             new_head.next = self.head
             self.head = new_head
-
-        if newNode is None:
             return
 
         node = self.head
@@ -90,5 +93,8 @@ class LinkedList:
                 new_node = Node(newNode)
                 new_node.next = node.next
                 node.next = new_node
-                break
+                if node == self.tail:
+                    self.tail = new_node
+                    return
+                return
             node = node.next
