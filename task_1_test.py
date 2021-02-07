@@ -122,39 +122,52 @@ class InsertHere(unittest.TestCase):
 
         """Добавляем к пустому списку один узел."""
 
-        a_list.insert(None, 1)
+        n1 = Node(1)
+        a_list.insert(None, n1)
         self.assertEqual(a_list.head, a_list.tail)
         self.assertEqual({'head': a_list.head, 'tail': a_list.tail}, a_list.__dict__)
         self.assertEqual(a_list.len(), 1)
 
-        """Пытаемся добавить в пустой список новый узел по afterNode."""
+        """Тест на проверку добавления в пустой список новый узел после не существующего узла."""
 
+        n2 = Node('kjchv')
         a_list.clean()
-        a_list.insert(1, 'kjchv')
+        a_list.insert(n1, n2)
         self.assertEqual(a_list.len(), 0)
         self.assertEqual({'head': None, 'tail': None}, a_list.__dict__)
         self.assertEqual(a_list.head,  a_list.tail)
 
         """Добавляем к списку из одного узла уэел перед ним."""
 
+        n3 = Node('3-')
         b_list.add_in_tail(Node('khkjbdvn'))
-        b_list.insert(None, '3-')
+        b_list.insert(None, n3)
         self.assertEqual({'head': b_list.head, 'tail': b_list.tail}, b_list.__dict__)
         self.assertEqual(b_list.len(), 2)
 
-        """Добавляем узел в середину списка."""
+        """Тест на добавление узла в конец списка."""
 
-        c_list.insert(2, 'r')
+        def iter_list(c_list):
+
+            """Функция принимает связанный список, а возвращает стандартный список узлов связанного списка."""
+
+            node = c_list.head
+            result = []
+            while node is not None:
+                result.append(node)
+                node = node.next
+            return result
+
+        n4 = Node('r')
+        c_list.insert(iter_list(c_list)[-1], n4)
         self.assertEqual(c_list.len(), 6)
-        self.assertEqual(c_list.head.next.next.next.next.next, c_list.tail)
+        self.assertEqual(n4, c_list.tail)
+        """Тест на добавление нового элемента в середину списка."""
 
-        """Добавляем узел после последнего узла списка."""
+        n5 = Node(117)
+        c_list.insert(iter_list(c_list)[2], n5)
+        self.assertEqual(c_list.len(), 7)
+        self.assertEqual(n5, c_list.head.next.next.next)
 
-        d_list.insert(2, 'r')
-        self.assertEqual(d_list.len(), 3)
-        self.assertEqual(d_list.head.next.next, d_list.tail)
-
-        d_list.insert('r', '125')
-        self.assertEqual(d_list.head.next.next.next, d_list.tail)
 
 

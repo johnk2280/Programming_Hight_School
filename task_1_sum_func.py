@@ -57,16 +57,18 @@ def sum_linked_lists_3(a_list, b_list):
     new_list = LinkedList()
     node_a = a_list.head
     node_b = b_list.head
-    prev_val = 0
+    prev_node = None
 
     while node_a is not None:
         val = node_a.value + node_b.value
+        node = Node(val)
         if new_list.head is None:
-            new_list.insert(None, val)
+            new_list.insert(None, node)
         else:
-            new_list.insert(prev_val, val)
+            new_list.insert(prev_node, node)
         node_a, node_b = node_a.next, node_b.next
-        prev_val = val
+        prev_node = node
 
     return new_list
+
 
