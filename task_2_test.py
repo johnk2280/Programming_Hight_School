@@ -114,6 +114,39 @@ class DeleteEmAll(unittest.TestCase):
         c_list.delete(2, True)
         self.assertEqual(c_list.__dict__, {'head': None, 'tail': None})
 
+    def test_delete_func_two_not_equal_nodes_list(self):
+        c_list = LinkedList2()
+        # d_list = LinkedList2()
+        d_list = LinkedList2()
+        n1 = Node(1)
+        n2 = Node(2)
+        n3 = Node(3)
+        n4 = Node(4)
+        n5 = Node(5)
+        n6 = Node(6)
+        c_list.add_in_tail(n1)
+        c_list.add_in_tail(n2)
+        d_list.add_in_head(n3)
+        d_list.add_in_head(n4)
+
+        c_list.delete(1)
+        self.assertEqual(c_list.__dict__, {'head': n2, 'tail': n2})
+        self.assertEqual(c_list.head.next, None)
+        self.assertEqual(c_list.tail.next, None)
+
+        d_list.delete(3)
+        self.assertEqual(d_list.__dict__, {'head': n4, 'tail': n4})
+        self.assertEqual(d_list.head.next, None)
+        self.assertEqual(d_list.tail.next, None)
+
+        d_list.add_in_tail(n5)
+        d_list.add_in_tail(n6)
+        d_list.delete(6)
+        self.assertEqual(d_list.__dict__, {'head': n4, 'tail': n5})
+        self.assertEqual(d_list.head.next, d_list.tail)
+        self.assertEqual(d_list.tail.next, None)
+
+
     def test_delete_func_three_equal_nodes_ih_head_list(self):
         d_list = LinkedList2()
         n1 = Node(2)
@@ -234,6 +267,7 @@ class InsertIt(unittest.TestCase):
         self.assertEqual(d_list.__dict__, {'head': n2, 'tail': n3})
         self.assertEqual([d_list.head, d_list.head.next, d_list.head.next.next, d_list.head.next.next.next],
                          [n2, n1, n4, n3])
+
 
 class AddInHead(unittest.TestCase):
 
