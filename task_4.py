@@ -11,7 +11,7 @@ class Stack:
 
         return count
 
-    def pop(self):  # Доработать
+    def pop(self):
         if self.stack.tail is None:
             return
 
