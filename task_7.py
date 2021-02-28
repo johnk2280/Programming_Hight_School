@@ -46,6 +46,7 @@ class OrderedList:
                 new_node.prev = node.prev
                 node.prev.next = new_node
                 node.prev = new_node
+                break
             node = node.next
 
     def find(self, val):
