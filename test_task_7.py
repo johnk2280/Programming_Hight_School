@@ -1,6 +1,5 @@
 from task_7 import *
 import pytest
-import random
 
 
 @pytest.mark.parametrize('value1, value2, expected_result', [
@@ -184,7 +183,7 @@ def test_len_after_delete_from_head__ascending(range_limit, removal_limit, expec
 
 
 @pytest.mark.parametrize('range_limit, removal_limit, expected_result', [
-    (0, 1, 0), (1, 1, 1), (10, 3, 7), (1000, 999, 1), (1000, 1000, 1), (10000, 5000, 5000)
+    (0, 1, 0), (1, 1, 1), (10, 3, 7), (1000, 999, 1), (1000, 1000, 1), (1000, 500, 500)
 ])
 def test_len_after_delete_from_tail_and_center__ascending(range_limit, removal_limit, expected_result):
     o_list = OrderedList(True)
@@ -198,7 +197,7 @@ def test_len_after_delete_from_tail_and_center__ascending(range_limit, removal_l
 
 
 @pytest.mark.parametrize('range_limit, removal_limit, expected_result', [
-    (0, 1, 0), (1, 1, 0), (10, 3, 6), (1000, 999, 0), (1000, 1000, 0), (10000, 5000, 4999)
+    (0, 1, 0), (1, 1, 0), (10, 3, 6), (1000, 999, 0), (1000, 1000, 0), (1000, 500, 499)
 ])
 def test_len_after_delete_from_head_and_center__descending(range_limit, removal_limit, expected_result):
     o_list = OrderedList(False)
@@ -212,7 +211,7 @@ def test_len_after_delete_from_head_and_center__descending(range_limit, removal_
 
 
 @pytest.mark.parametrize('range_limit, removal_limit, expected_result', [
-    (0, 1, 0), (1, 1, 0), (10, 3, 7), (1000, 999, 1), (1000, 1000, 0), (10000, 5000, 5000)
+    (0, 1, 0), (1, 1, 0), (10, 3, 7), (1000, 999, 1), (1000, 1000, 0), (1000, 500, 500)
 ])
 def test_len_after_delete_from_tail__descending(range_limit, removal_limit, expected_result):
     o_list = OrderedList(False)
@@ -246,9 +245,68 @@ def test_len_after_add__descending(range_limit, item, expected_result):
 
 
 @pytest.mark.parametrize('string_1, string_2, expected_result', [
-    ('a', 'a', 0), (' f', ' f ', 0), ('abc', 'abcde', -1), ('a b  c', 'abcde', 1)
+    ('a', 'a', 0), (' f', ' f ', 0), ('abc', 'abcde', -1), ('a b  c', 'abcde', -1)
 ])
-def test_string_compare(string_1, string_2, expected_result):
+def test_compare_string(string_1, string_2, expected_result):
     str_list = OrderedStringList(True)
     assert str_list.compare(string_1, string_2) == expected_result
 
+
+@pytest.mark.parametrize('s1, s2, s3, s4', [(' a ', '  b', 'c ', 'b  ')])
+def test_add__ascending(s1, s2, s3, s4):
+    os_list = OrderedStringList(True)
+    os_list.add(s1)
+    assert os_list.get_all() == [os_list.head]
+    assert os_list.get_all() == [os_list.tail]
+    os_list.add(s2)
+    assert os_list.get_all() == [os_list.head, os_list.tail]
+    assert os_list.get_all() == [os_list.head, os_list.head.next]
+    assert os_list.get_all() == [os_list.tail.prev, os_list.tail]
+    os_list.add(s3)
+    assert os_list.get_all() == [os_list.head, os_list.head.next, os_list.head.next.next]
+    assert os_list.get_all() == [os_list.tail.prev.prev, os_list.tail.prev, os_list.tail]
+    os_list.add(s4)
+    assert os_list.get_all() == [os_list.head, os_list.head.next, os_list.head.next.next, os_list.head.next.next.next]
+    assert os_list.get_all() == [os_list.tail.prev.prev.prev, os_list.tail.prev.prev, os_list.tail.prev, os_list.tail]
+    assert [os_list.tail.prev.prev.prev.value,
+            os_list.tail.prev.prev.value,
+            os_list.tail.prev.value,
+            os_list.tail.value] == [' a ', 'b  ', '  b', 'c ']
+
+
+@pytest.mark.parametrize('s1, s2, s3, s4', [(' a ', '  b', 'c ', 'b  ')])
+def test_add__descending(s1, s2, s3, s4):
+    os_list = OrderedStringList(False)
+    os_list.add(s1)
+    assert os_list.get_all() == [os_list.head]
+    assert os_list.get_all() == [os_list.tail]
+    os_list.add(s2)
+    assert os_list.get_all() == [os_list.head, os_list.tail]
+    assert os_list.get_all() == [os_list.head, os_list.head.next]
+    assert os_list.get_all() == [os_list.tail.prev, os_list.tail]
+    os_list.add(s3)
+    assert os_list.get_all() == [os_list.head, os_list.head.next, os_list.head.next.next]
+    assert os_list.get_all() == [os_list.tail.prev.prev, os_list.tail.prev, os_list.tail]
+    os_list.add(s4)
+    assert os_list.get_all() == [os_list.head, os_list.head.next, os_list.head.next.next, os_list.head.next.next.next]
+    assert os_list.get_all() == [os_list.tail.prev.prev.prev, os_list.tail.prev.prev, os_list.tail.prev, os_list.tail]
+    assert [os_list.tail.prev.prev.prev.value,
+            os_list.tail.prev.prev.value,
+            os_list.tail.prev.value,
+            os_list.tail.value] == ['c ', 'b  ', '  b', ' a ']
+
+
+@pytest.mark.parametrize('s1, s2, s3, s4', [
+    (' a ', '  b', 'c ', 'd  '), (' a ', '  ab', 'ac ', 'cb  '), ('f a b', '  fab', 'dac ', 'gcb  ')
+])
+def test_delete__ascending(s1, s2, s3, s4):
+    os_list = OrderedStringList(True)
+    os_list.add(s1)
+    os_list.add(s2)
+    os_list.add(s3)
+    os_list.add(s4)
+    os_list.delete(s3)
+    spam = [s1, s2, s4]
+    assert [os_list.tail.prev.prev.value,
+            os_list.tail.prev.value,
+            os_list.tail.value] == list(sorted(spam, key=lambda s: s.strip()))
