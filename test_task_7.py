@@ -1,5 +1,6 @@
 from task_7 import *
 import pytest
+import random
 
 
 @pytest.mark.parametrize('value1, value2, expected_result', [
@@ -148,21 +149,23 @@ def test_clean__descending(range_limit, expected_result):
     assert o_list.__dict__ == {'head': None, 'tail': None, '_OrderedList__ascending': True}
 
 
-@pytest.mark.parametrize('range_limit, expected_result', [(0, 0), (1, 1), (10, 10), (100, 100)])
-def test_len_after_add__ascending(range_limit, expected_result):
+@pytest.mark.parametrize('range_limit, item, expected_result', [(0, 1, 1), (1, 0, 2), (10, 3, 11), (1000, 500, 1001)])
+def test_len_after_add__ascending(range_limit, item, expected_result):
     o_list = OrderedList(True)
     for i in range(range_limit):
         o_list.add(i)
 
+    o_list.add(item)
     assert o_list.len() == expected_result
 
 
-@pytest.mark.parametrize('range_limit, expected_result', [(0, 0), (1, 1), (10, 10), (1000, 1000)])
-def test_len_after_add__descending(range_limit, expected_result):
+@pytest.mark.parametrize('range_limit, item, expected_result', [(0, 1, 1), (1, 0, 2), (10, 3, 11), (1000, 500, 1001)])
+def test_len_after_add__descending(range_limit, item, expected_result):
     o_list = OrderedList(False)
     for i in range(range_limit):
         o_list.add(i)
 
+    o_list.add(item)
     assert o_list.len() == expected_result
 
 
@@ -222,9 +225,30 @@ def test_len_after_delete_from_tail__descending(range_limit, removal_limit, expe
     assert o_list.len() == expected_result
 
 
+@pytest.mark.parametrize('range_limit, item, expected_result', [(0, 1, 0), (1, 0, 0), (10, 3, 9), (1000, 500, 999)])
+def test_len_after_add__ascending(range_limit, item, expected_result):
+    o_list = OrderedList(True)
+    for i in range(range_limit):
+        o_list.add(i)
+
+    o_list.delete(item)
+    assert o_list.len() == expected_result
+
+
+@pytest.mark.parametrize('range_limit, item, expected_result', [(0, 1, 0), (1, 0, 0), (10, 3, 9), (1000, 500, 999)])
+def test_len_after_add__descending(range_limit, item, expected_result):
+    o_list = OrderedList(False)
+    for i in range(range_limit):
+        o_list.add(i)
+
+    o_list.delete(item)
+    assert o_list.len() == expected_result
+
+
 @pytest.mark.parametrize('string_1, string_2, expected_result', [
     ('a', 'a', 0), (' f', ' f ', 0), ('abc', 'abcde', -1), ('a b  c', 'abcde', 1)
 ])
 def test_string_compare(string_1, string_2, expected_result):
     str_list = OrderedStringList(True)
     assert str_list.compare(string_1, string_2) == expected_result
+
