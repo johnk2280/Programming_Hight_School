@@ -52,3 +52,39 @@ def test_seek_slot(size, value, slot_index):
     ht = HashTable(size, 2)
 
     assert ht.seek_slot(value) == slot_index
+
+
+@pytest.mark.parametrize('size, step, values, slot_indexes', [
+    (17,
+     2,
+     [
+         'Туча мглою небо кроетggggg',
+         'БаклажаН   ',
+         'Туча мглою небо кроет',
+         'Туча мглою небокроет',
+         'He666098766_!',
+         'Туча мглоюнебокроет',
+         'Тучамглоюнебокроет',
+         'тучамглоюнебокроет',
+         'Зимой и летом одним цветом',
+         'He6660)(*&^&%$#398__world_)wf4562245!',
+         'Зимой и летом однимцветом',
+         'Зимой и летомоднимцветом',
+         'Зимой илетомоднимцветом',
+         'Зимойилетомоднимцветом',
+         'Hello World!!@#$%^&*()',
+         'Hello World!&*',
+         'HelWor___!',
+         'Hello World!&*(',
+         'Hello World!&*('
+     ],
+     [7, 0, 2, 4, 5, 6, 8, 11, 12, 13, 14, 16, 1, 3, 15, 9, 10])
+])
+def test_seek_slot_after_filling(size, step, values, slot_indexes):
+    ht = HashTable(size, step)
+    result = []
+    for i in range(size):
+        result.append(ht.seek_slot(values[i]))
+
+    assert result == slot_indexes
+# TODO: проверить коллизии.
