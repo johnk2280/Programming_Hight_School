@@ -15,23 +15,26 @@ class HashTable:
             if not self.slots[slot_index]:
                 return slot_index
 
-            slot_index = (slot_index + self.step) % len(self.slots)
+            slot_index = (slot_index + self.step) % self.size
             if len(cash) == len(self.slots):
                 return None
 
     def put(self, value):
-        # записываем значение по хэш-функции
-
-        # возвращается индекс слота или None,
-        # если из-за коллизий элемент не удаётся
-        # разместить
         slot_index = self.seek_slot(value)
-        if slot_index:
-            self.slots.append(slot_index)
+        if slot_index or slot_index == 0:
+            self.slots[slot_index] = value
             return slot_index
 
         return None
 
     def find(self, value):
-        # находит индекс слота со значением, или None
-        return None
+        cash = set()
+        slot_index = self.hash_fun(value)
+        while True:
+            cash.add(slot_index)
+            if self.slots[slot_index] == value:
+                return slot_index
+
+            slot_index = (slot_index + self.step) % self.size
+            if len(cash) == self.size:
+                return None
