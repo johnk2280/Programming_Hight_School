@@ -18,7 +18,7 @@ class NativeDictionary:
                 return True
 
             if len(cash) == self.size:
-                return None
+                return False
 
             slot_index = (slot_index + 4) % self.size
 
