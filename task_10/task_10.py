@@ -26,7 +26,13 @@ class PowerSet:
         return [el for el in self.storage if el in set2.storage]
 
     def union(self, set2):
-        return [self.storage.append(el) for el in set2.storage if el not in self.storage]
+        result = []
+        result.extend(self.storage)
+        for el in set2.storage:
+            if el not in self.storage:
+                result.append(el)
+
+        return result
 
     def difference(self, set2):
         return [el for el in self.storage if el not in set2.storage]
@@ -35,4 +41,4 @@ class PowerSet:
         arr1 = self.storage.copy()
         arr2 = set2.storage.copy()
 
-        return sorted(arr2) == sorted(arr1)[: arr2[-1]]
+        return sorted(arr2) == sorted(arr1)[: len(arr2)]
