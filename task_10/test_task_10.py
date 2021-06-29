@@ -11,7 +11,7 @@ def test_put(values, expected_result):
     for value in values:
         ps.put(value)
 
-    assert sorted(ps.storage) == expected_result
+    assert sorted(ps.slots) == expected_result
 
 
 @pytest.mark.parametrize('values, value, expected_result', [
@@ -39,9 +39,9 @@ def test_remove(values, value, expected_result):
 
 
 @pytest.mark.parametrize('values_1, values_2, expected_result', [
-    ([1, 2, 3, 4, 5], [7, 8, 9, 2, 1], [1, 2]),
-    ([1, 2, 3, 4, 5], [7, 8, 9], []),
-    ([1, 2, 3, 4, 5], [7, 8, 9, 1, 2, 3, 4, 5], [1, 2, 3, 4, 5]),
+    ([1, 2, 3, 4, 5], [7, 8, 9, 2, 1], list({1, 2, 3, 4, 5} & {7, 8, 9, 2, 1})),
+    ([1, 2, 3, 4, 5], [7, 8, 9], list({1, 2, 3, 4, 5} & {7, 8, 9})),
+    ([1, 2, 3, 4, 5], [7, 8, 9, 1, 2, 3, 4, 5], list({1, 2, 3, 4, 5} & {7, 8, 9, 1, 2, 3, 4, 5}))
 ])
 def test_intersection(values_1, values_2, expected_result):
     ps1 = PowerSet()
@@ -52,7 +52,7 @@ def test_intersection(values_1, values_2, expected_result):
     for el in values_2:
         ps2.put(el)
 
-    assert ps1.intersection(ps2) == expected_result
+    assert ps1.intersection(ps2).slots == expected_result
 
 
 @pytest.mark.parametrize('values_1, values_2, expected_result', [
@@ -69,7 +69,7 @@ def test_union(values_1, values_2, expected_result):
     for el in values_2:
         ps2.put(el)
 
-    assert ps1.union(ps2) == expected_result
+    assert ps1.union(ps2).slots == expected_result
 
 
 @pytest.mark.parametrize('values_1, values_2, expected_result', [
@@ -86,7 +86,7 @@ def test_difference(values_1, values_2, expected_result):
     for el in values_2:
         ps2.put(el)
 
-    assert ps1.difference(ps2) == expected_result
+    assert ps1.difference(ps2).slots == expected_result
 
 
 @pytest.mark.parametrize('values_1, values_2, expected_result', [

@@ -1,42 +1,52 @@
 class PowerSet:
 
     def __init__(self):
-        self.storage = []
+        self.slots = []
 
     def size(self):
-        return len(self.storage)
+        return len(self.slots)
 
     def put(self, value):
-        if value not in self.storage:
-            self.storage.append(value)
+        if value not in self.slots:
+            self.slots.append(value)
 
     def get(self, value):
-        return value in self.storage
+        return value in self.slots
 
     def remove(self, value):
         try:
-            self.storage.remove(value)
+            self.slots.remove(value)
             return True
         except ValueError:
             return False
 
     def intersection(self, set2):
-        return [el for el in self.storage if el in set2.storage]
+        result = PowerSet()
+        for value in self.slots:
+            if set2.get(value):
+                result.put(value)
+
+        return result
 
     def union(self, set2):
-        result = []
-        result.extend(self.storage)
-        for el in set2.storage:
-            if el not in self.storage:
-                result.append(el)
+        result = PowerSet()
+        result.slots = self.slots.copy()
+        for el in set2.slots:
+            if el not in result.slots:
+                result.put(el)
 
         return result
 
     def difference(self, set2):
-        return [el for el in self.storage if el not in set2.storage]
+        result = PowerSet()
+        for value in self.slots:
+            if value not in set2.slots:
+                result.put(value)
+
+        return result
 
     def issubset(self, set2):
-        arr1 = self.storage.copy()
-        arr2 = set2.storage.copy()
+        arr1 = self.slots.copy()
+        arr2 = set2.slots.copy()
 
         return sorted(arr2) == sorted(arr1)[: len(arr2)]
