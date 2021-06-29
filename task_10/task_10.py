@@ -3,42 +3,36 @@
 class PowerSet:
 
     def __init__(self):
-        pass
-
-    # ваша реализация хранилища
+        self.storage = []
 
     def size(self):
-        return 0
-        # количество элементов в множестве
+        return len(self.storage)
 
     def put(self, value):
-        # всегда срабатывает
-        pass
+        if value not in self.storage:
+            self.storage.append(value)
 
     def get(self, value):
-        # возвращает True если value имеется в множестве,
-        # иначе False
-        return False
+        return value in self.storage
 
     def remove(self, value):
-        # возвращает True если value удалено
-        # иначе False
-        return False
+        try:
+            self.storage.remove(value)
+            return True
+        except ValueError:
+            return False
 
     def intersection(self, set2):
-        # пересечение текущего множества и set2
-        return None
+        return [el for el in self.storage if el in set2.storage]
 
     def union(self, set2):
-        # объединение текущего множества и set2
-        return None
+        return [self.storage.append(el) for el in set2.storage if el not in self.storage]
 
     def difference(self, set2):
-        # разница текущего множества и set2
-        return None
+        return [el for el in self.storage if el not in set2.storage]
 
     def issubset(self, set2):
-        # возвращает True, если set2 есть
-        # подмножество текущего множества,
-        # иначе False
-        return False
+        arr1 = self.storage.copy()
+        arr2 = set2.storage.copy()
+
+        return sorted(arr2) == sorted(arr1)[: arr2[-1]]
