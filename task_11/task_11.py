@@ -2,23 +2,25 @@ class BloomFilter:
 
     def __init__(self, f_len):
         self.filter_len = f_len
-        # создаём битовый массив длиной f_len ...
+        self.storage = [0] * self.filter_len
 
     def hash1(self, str1):
-        # 17
+        result = 0
         for c in str1:
-            code = ord(c)
-        # реализация ...
+            result = (result * 17 + ord(c)) % self.filter_len
+
+        return result
 
     def hash2(self, str1):
-        # 223
-        # ...
-        pass
+        result = 0
+        for c in str1:
+            result = (result * 223 + ord(c)) % self.filter_len
+
+        return result
 
     def add(self, str1):
-        # добавляем строку str1 в фильтр
-        pass
+        self.storage[self.hash1(str1)] = 1
+        self.storage[self.hash2(str1)] = 1
 
     def is_value(self, str1):
-        # проверка, имеется ли строка str1 в фильтре
-        pass
+        return False if self.storage[self.hash1(str1)] == 0 or self.storage[self.hash2(str1)] == 0 else True
