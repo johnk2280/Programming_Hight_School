@@ -18,7 +18,7 @@ class NativeCache:
                 self.slots[slot_index] = key
                 self.values[slot_index] = value
                 self.hits[slot_index] += 1
-                break
+                return
             slot_index = (slot_index + 4) % self.size
 
         self.displace(key, value)
