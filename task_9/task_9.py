@@ -8,49 +8,20 @@ class NativeDictionary:
         return sum(key.encode('utf-8')) % self.size
 
     def is_key(self, key):
-        cash = []
-        slot_index = self.hash_fun(key)
-        while True:
-            if slot_index not in cash:
-                cash.append(slot_index)
-
-            if self.slots[slot_index] == key:
-                return True
-
-            if len(cash) == self.size:
-                return False
-
-            slot_index = (slot_index + 4) % self.size
+        return key in self.slots
 
     def put(self, key, value):
-        cash = []
         slot_index = self.hash_fun(key)
-        while True:
-            if slot_index not in cash:
-                cash.append(slot_index)
-
-            if self.slots[slot_index] == key or not self.slots[slot_index]:
-                self.values[slot_index] = value
+        for i in range(self.size):
+            if not self.slots[slot_index] or self.slots[slot_index] == key:
                 self.slots[slot_index] = key
-                break
-
-            if len(cash) == self.size:
-                break
-
+                self.values[slot_index] = value
+                return
             slot_index = (slot_index + 4) % self.size
 
     def get(self, key):
-        if self.is_key(key):
-            cash = []
-            slot_index = self.hash_fun(key)
-            while True:
-                if slot_index not in cash:
-                    cash.append(slot_index)
-
-                if self.slots[slot_index] == key:
-                    return self.values[slot_index]
-
-                if len(cash) == self.size:
-                    return None
-
-                slot_index = (slot_index + 4) % self.size
+        try:
+            slot_index = self.slots.index(key)
+            return self.values[slot_index]
+        except ValueError:
+            return
