@@ -12,7 +12,8 @@ class FindSubs(unittest.TestCase):
         self.assertEqual(my_subs.find_subs('джлыражптавжлиьт', 'а м'), 'джлыражптавжлиьт'.find('а м'))
         self.assertEqual(my_subs.find_subs(r'94793fjd098[eenco', '098'), r'94793fjd098[eenco'.find('098'))
         self.assertEqual(my_subs.find_subs('Hello world!', 'd!'), 'Hello world!'.find('d!'))
-        self.assertEqual(my_subs.find_subs('Мой дядя самых честных правил,\nКогда не в шутку занемог,\nОн уважать себя заставил\t\tИ лучше выдумать не мог.\nЕго пример другим наука;\n', 'шут'),
+        self.assertEqual(
+            my_subs.find_subs('Мой дядя самых честных правил,\nКогда не в шутку занемог,\nОн уважать себя заставил\t\tИ лучше выдумать не мог.\nЕго пример другим наука;\n', 'шут'),
                          'Мой дядя самых честных правил, Когда не в шутку занемог, Он уважать себя заставил И лучше выдумать не мог. Его пример другим наука;'.find('шут'))
 
     def test_find_subs_random_result(self):
