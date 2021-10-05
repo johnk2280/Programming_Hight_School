@@ -4,6 +4,7 @@ class Node:
         self.value = v
         self.next = None
 
+
 class LinkedList:
 
     def __init__(self):
